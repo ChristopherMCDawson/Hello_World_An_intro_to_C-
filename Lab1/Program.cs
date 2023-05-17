@@ -45,19 +45,19 @@ namespace Lab1
                         CountDistinctWords();
                         break;
                     case "5":
-                        TakeLast50Words();
+                        Takelast50Words();
                         break;
                     case "6":
-                        ReversePrintWords();
+                        ReversePrintwords();
                         break;
                     case "7":
-                        GetWordsEndingWithD();
+                        GetwordsEndingWithD();
                         break;
                     case "8":
                         GetWordsStartingWithR();
                         break;
                     case "9":
-                        GetwordsLongerTHen3andStartsWithA();
+                        GetWordsLongerThan3AndStartsWithA();
                         break;
                     case "x":
                         exit = true;
@@ -73,10 +73,10 @@ namespace Lab1
         {
             try
             {
-                words.Clear();
-                string[] lines = File.ReadAllLines("Words.txt");
-                words.AddRange(lines.SelectMany(line => line.Split(' ')));
-                Console.WriteLine($"Successfully imported{words.Count} words from file.");
+                Words.Clear();
+                string[] lines = File.ReadAllLines(@".\Words.txt");
+                Words.AddRange(lines.SelectMany(line => line.Split(' ')));
+                Console.WriteLine($"Successfully imported{Words.Count} words from file.");
             }
             catch(FileNotFoundException)
             {
@@ -92,7 +92,7 @@ namespace Lab1
             try
             {
                 DateTime startTime = DateTime.Now;
-                for (int i = 0;i<sortedwords.Count - 1; i++)
+                for (int i = 0;i<sortedWords.Count - 1; i++)
                 {
                     for(int j = 0;j<sortedWord.Count - i - 1; j++)
                     {
@@ -175,8 +175,53 @@ namespace Lab1
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+        static void GetwordsEndingWithD()
+        {
+            try
+            {
+                IList<string> wordsEndingWithD = words.Where(w => w.EndsWith("d")).ToList();
+                Console.WriteLine($"Words ending with 'd' ({wordsEndingWithD.Count}):");
+                foreach (string word in wordsEndingWithD)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+           }
+        static void GetWordsStartingWithR()
+        {
+            try
+            {
+                IList<string> wordsStartingWithR = words.Where(w => w.StartsWith("r")).ToList();
+                Console.WriteLine($"Words starting with 'r' ({wordsStartingWithR.Count}):");
+                foreach (string word in wordsStartingWithR)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
-    }
+        static void GetWordsLongerThan3AndStartsWithA()
+        {
+            try
+            {
+                IList<string> wordsLongerThan3AndStartsWithA = words.Where(w => w.Length > 3 && w.StartsWith("a")).ToList();
+                Console.WriteLine($"Words longer than 3 characters and starting with 'a' ({wordsLongerThan3AndStartsWithA.Count}):");
+                foreach (string word in wordsLongerThan3AndStartsWithA)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
     }
 }
