@@ -1,19 +1,20 @@
-﻿using System;
+﻿using ServiceStack;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-
 namespace Lab1
 {
-     class Program
+    class Program
     {
-        static IList<string> words = new List<string>();
+     
+
         static void Main(string[] args)
         {
-            bool exit=false;
-            
-            while(!exit)
+            bool exit = false;
+
+            while (!exit)
             {
                 Console.WriteLine("Menu:");
                 Console.WriteLine("1 - Import Words from File");
@@ -24,7 +25,7 @@ namespace Lab1
                 Console.WriteLine("6 - Reverse print the words");
                 Console.WriteLine("7 - Get and display words that end with 'd' and display the count");
                 Console.WriteLine("8 - Get and display words that start with 'r' and display the count");
-                Console.WriteLine("9 - get and display words that are more then 3 characters long and start with the letter'a',display");
+                Console.WriteLine("9 - Get and display words that are more than 3 characters long and start with the letter 'a'");
                 Console.WriteLine("x - Exit");
 
                 Console.Write("Enter your choice: ");
@@ -33,7 +34,7 @@ namespace Lab1
                 switch (choice)
                 {
                     case "1":
-                        ImportWordsFromFile();
+                        readFile();
                         break;
                     case "2":
                         BubbleSortWords();
@@ -45,13 +46,13 @@ namespace Lab1
                         CountDistinctWords();
                         break;
                     case "5":
-                        Takelast50Words();
+                        TakeLast50Words();
                         break;
                     case "6":
-                        ReversePrintwords();
+                        ReversePrintWords();
                         break;
                     case "7":
-                        GetwordsEndingWithD();
+                        GetWordsEndingWithD();
                         break;
                     case "8":
                         GetWordsStartingWithR();
@@ -63,38 +64,49 @@ namespace Lab1
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Invailt choice.Please try again");
+                        Console.WriteLine("Invalid choice. Please try again");
                         break;
                 }
                 Console.WriteLine();
             }
         }
-        static void ImportWordsFromFile()
+
+        static IList<string> readFile()
         {
             try
             {
-                Words.Clear();
-                string[] lines = File.ReadAllLines(@".\Words.txt");
-                Words.AddRange(lines.SelectMany(line => line.Split(' ')));
-                Console.WriteLine($"Successfully imported{Words.Count} words from file.");
+                IList<string> words;
+                words = System.IO.File.ReadAllLines(@".\Words.txt");
+                int Count = 0;
+                Count = words.Count;
+                foreach (string line in words)
+                {
+                    Count++;
+                }
+                Console.WriteLine($"Successfully imported {words.Count} words from file.");
+                return words;
             }
-            catch(FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 Console.WriteLine("File not found.");
             }
-            catch (Exception ex) {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
         static void BubbleSortWords()
         {
-            IList<string> words = new List<string>(words);
             try
             {
+                List<string> sortedWords = new List<string>(Words);
+
                 DateTime startTime = DateTime.Now;
-                for (int i = 0;i<sortedWords.Count - 1; i++)
+
+                for (int i = 0; i < sortedWords.Count - 1; i++)
                 {
-                    for(int j = 0;j<sortedWord.Count - i - 1; j++)
+                    for (int j = 0; j < sortedWords.Count - i - 1; j++)
                     {
                         if (string.Compare(sortedWords[j], sortedWords[j + 1]) > 0)
                         {
@@ -104,33 +116,37 @@ namespace Lab1
                         }
                     }
                 }
-                DateTime endTime = DateTime.Now;
-                TimeSpan duration = endTime - startTime;
-                Console.WriteLine($"Bubble sort complete. Sorted {sortedWords.Count}words.Time tkaen: {duration.TotalMilliseconds}ms");
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"An error occured: {ex.Message}");
-            }
-        }
-        static void LINQSortWords()
-        {
-            IList<string>
-                sortedWords = new List<string>(words);
-            try
-            {
-                DateTime startTime = DateTime.Now;
-                sortedWords = sortedWords.OrderBy(w => w).ToList();
+
                 DateTime endTime = DateTime.Now;
                 TimeSpan duration = endTime - startTime;
 
-                Console.WriteLine($"LINQ sort complete. Sorted {sortedWords.Count} words. Time taken: {duration.TotalMilliseconds}ms");
+                Console.WriteLine($"Bubble sort complete. Sorted {sortedWords.Count} words. Time taken: {duration.TotalMilliseconds} ms");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
+        static void LINQSortWords()
+        {
+            try
+            {
+                List<string> sortedWords = new List<string>(words);
+
+                DateTime startTime = DateTime.Now;
+
+                sortedWords = sortedWords.OrderBy(w => w).ToList();
+
+                DateTime endTime = DateTime.Now;
+                TimeSpan duration = endTime - startTime; Console.WriteLine($"LINQ sort complete. Sorted {sortedWords.Count} words. Time taken: {duration.TotalMilliseconds} ms");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
         static void CountDistinctWords()
         {
             try
@@ -143,11 +159,12 @@ namespace Lab1
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
-        static void Takelast50Words()
+
+        static void TakeLast50Words()
         {
             try
             {
-                IList<string> last50Words = words.TakeLast(50).ToList();
+                List<string> last50Words = words.TakeLast(50).ToList();
                 Console.WriteLine("Last 50 words:");
                 foreach (string word in last50Words)
                 {
@@ -159,11 +176,12 @@ namespace Lab1
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
-        static void ReversePrintwords()
+
+        static void ReversePrintWords()
         {
             try
             {
-                IList<string> reversedWords = words.Reverse().ToList();
+                List<string> reversedWords = words.Reverse().ToList();
                 Console.WriteLine("Words in reverse order:");
                 foreach (string word in reversedWords)
                 {
@@ -175,11 +193,12 @@ namespace Lab1
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
-        static void GetwordsEndingWithD()
+
+        static void GetWordsEndingWithD()
         {
             try
             {
-                IList<string> wordsEndingWithD = words.Where(w => w.EndsWith("d")).ToList();
+                List<string> wordsEndingWithD = words.Where(w => w.EndsWith("d")).ToList();
                 Console.WriteLine($"Words ending with 'd' ({wordsEndingWithD.Count}):");
                 foreach (string word in wordsEndingWithD)
                 {
@@ -190,12 +209,13 @@ namespace Lab1
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
-           }
+        }
+
         static void GetWordsStartingWithR()
         {
             try
             {
-                IList<string> wordsStartingWithR = words.Where(w => w.StartsWith("r")).ToList();
+                List<string> wordsStartingWithR = words.Where(w => w.StartsWith("r")).ToList();
                 Console.WriteLine($"Words starting with 'r' ({wordsStartingWithR.Count}):");
                 foreach (string word in wordsStartingWithR)
                 {
@@ -207,21 +227,23 @@ namespace Lab1
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
         static void GetWordsLongerThan3AndStartsWithA()
         {
             try
             {
-                IList<string> wordsLongerThan3AndStartsWithA = words.Where(w => w.Length > 3 && w.StartsWith("a")).ToList();
+                List<string> wordsLongerThan3AndStartsWithA = words.Where(w => w.Length > 3 && w.StartsWith("a")).ToList();
                 Console.WriteLine($"Words longer than 3 characters and starting with 'a' ({wordsLongerThan3AndStartsWithA.Count}):");
                 foreach (string word in wordsLongerThan3AndStartsWithA)
                 {
                     Console.WriteLine(word);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
     }
 }
+
