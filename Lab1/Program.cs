@@ -75,7 +75,47 @@ namespace Lab1
             {
                 words.Clear();
                 string[] lines = File.ReadAllLines("Words.txt");
+                words.AddRange(lines.SelectMany(line => line.Split(' ')));
+                Console.WriteLine($"Successfully imported{words.Count} words from file.");
             }
+            catch(FileNotFoundException)
+            {
+                Console.WriteLine("File not found.");
+            }
+            catch (Exception ex) {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void BubbleSortWords()
+        {
+            IList<string> words = new List<string>(words);
+            try
+            {
+                DateTime startTime = DateTime.Now;
+                for (int i = 0;i<sortedwords.Count - 1; i++)
+                {
+                    for(int j = 0;j<sortedWord.Count - i - 1; j++)
+                    {
+                        if (string.Compare(sortedWords[j], sortedWords[j + 1]) > 0)
+                        {
+                            string temp = sortedWords[j];
+                            sortedWords[j] = sortedWords[j + 1];
+                            sortedWords[j + 1] = temp;
+                        }
+                    }
+                }
+                DateTime endTime = DateTime.Now;
+                TimeSpan duration = endTime - startTime;
+                Console.WriteLine($"Bubble sort complete. Sorted {sortedWords.Count}words.Time tkaen: {duration.TotalMilliseconds}ms");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+            }
+        }
+        static void LINQSortWords()
+        {
+
         }
     }
 }
