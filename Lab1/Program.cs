@@ -115,7 +115,68 @@ namespace Lab1
         }
         static void LINQSortWords()
         {
+            IList<string>
+                sortedWords = new List<string>(words);
+            try
+            {
+                DateTime startTime = DateTime.Now;
+                sortedWords = sortedWords.OrderBy(w => w).ToList();
+                DateTime endTime = DateTime.Now;
+                TimeSpan duration = endTime - startTime;
 
+                Console.WriteLine($"LINQ sort complete. Sorted {sortedWords.Count} words. Time taken: {duration.TotalMilliseconds}ms");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void CountDistinctWords()
+        {
+            try
+            {
+                int distinctCount = words.Distinct().Count();
+                Console.WriteLine($"Distinct words count: {distinctCount}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void Takelast50Words()
+        {
+            try
+            {
+                IList<string> last50Words = words.TakeLast(50).ToList();
+                Console.WriteLine("Last 50 words:");
+                foreach (string word in last50Words)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void ReversePrintwords()
+        {
+            try
+            {
+                IList<string> reversedWords = words.Reverse().ToList();
+                Console.WriteLine("Words in reverse order:");
+                foreach (string word in reversedWords)
+                {
+                    Console.WriteLine(word);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        }
+    }
         }
     }
 }
