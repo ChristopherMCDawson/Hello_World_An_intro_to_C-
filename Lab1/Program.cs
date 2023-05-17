@@ -30,10 +30,51 @@ namespace Lab1
                 Console.Write("Enter your choice: ");
                 string choice = Console.ReadLine();
 
-                switch(choice)
+                switch (choice)
                 {
-
+                    case "1":
+                        ImportWordsFromFile();
+                        break;
+                    case "2":
+                        BubbleSortWords();
+                        break;
+                    case "3":
+                        LINQSortWords();
+                        break;
+                    case "4":
+                        CountDistinctWords();
+                        break;
+                    case "5":
+                        TakeLast50Words();
+                        break;
+                    case "6":
+                        ReversePrintWords();
+                        break;
+                    case "7":
+                        GetWordsEndingWithD();
+                        break;
+                    case "8":
+                        GetWordsStartingWithR();
+                        break;
+                    case "9":
+                        GetwordsLongerTHen3andStartsWithA();
+                        break;
+                    case "x":
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invailt choice.Please try again");
+                        break;
                 }
+                Console.WriteLine();
+            }
+        }
+        static void ImportWordsFromFile()
+        {
+            try
+            {
+                words.Clear();
+                string[] lines = File.ReadAllLines("Words.txt");
             }
         }
     }
