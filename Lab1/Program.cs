@@ -26,14 +26,18 @@ namespace Lab1
 {
     class Program
     {
-     
+        
+        private static List<string> words = new List<string>();
+
         // the Main method which holds the menu and the switch cases for the menu options , which in turns calls the other methods.
         static void Main(string[] args)
         {
             bool exit = false;
+         
             // runs till an Exit call
             while (!exit)
             {
+                //Console.WriteLine($"Current Directory: {Environment.CurrentDirectory}");// USed for finding the right directory for placing the word.txt file.
                 Console.WriteLine("Menu:");
                 Console.WriteLine("1 - Import Words from File");
                 Console.WriteLine("2 - Bubble Sort words");
@@ -45,15 +49,15 @@ namespace Lab1
                 Console.WriteLine("8 - Get and display words that start with 'r' and display the count");
                 Console.WriteLine("9 - Get and display words that are more than 3 characters long and start with the letter 'a'");
                 Console.WriteLine("x - Exit");
-
+              
                 Console.Write("Enter your choice: ");
                 // takes user input into the Switch case.
-                string choice = Console.ReadLine();
+                string choice = Console.ReadLine() ?? string.Empty;
 
                 switch (choice)
                 {
                     case "1":
-                        readFile();
+                        words = ReadFile();
                         break;
                     case "2":
                         BubbleSortWords();
@@ -68,7 +72,7 @@ namespace Lab1
                         TakeLast50Words();
                         break;
                     case "6":
-                        ReversePrintWords();
+                        ReversePrintWords(words);
                         break;
                     case "7":
                         GetWordsEndingWithD();
@@ -90,20 +94,15 @@ namespace Lab1
             }
         }
         // This Method is used to Read or import the Words.txt file into the program for use.
-        static IList<string> readFile()
+        static List<string> ReadFile()
         {
+            
             try
-            { // creates a List and then reads the file and adds the words to the List.
-                IList<string> words;
-                words = System.IO.File.ReadAllLines(@".\Words.txt");
-                int Count = 0;
-                Count = words.Count;
-                foreach (string line in words)
-                {  // Increase the count so that it can go to the next word.
-                    Count++;
-                }
-                Console.WriteLine($"Successfully imported {words.Count} words from file.");
-                return words;
+            {
+                string[] lines = File.ReadAllLines(@"Words.txt");
+                words.AddRange(lines);
+                int wordCount = words.Count;
+                Console.WriteLine($"Successfully imported {wordCount} words from file.");
             }
             catch (FileNotFoundException)
             {
@@ -113,13 +112,16 @@ namespace Lab1
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+            return words;
         }
+
         // This method Sorts the words on the Imported file in the Bubblesort style and displays the compu time in mills.
         static void BubbleSortWords()
         {
-            try { 
-            // Bubble sorts
-                List<string> sortedWords = new List<string>(Words);
+            try {
+                // Bubble sorts
+                List<string> sortedWords = new List<string>(words ?? new List<string>());
+
                 // begin the time recorded for sorting time.
                 DateTime startTime = DateTime.Now;
 
@@ -170,7 +172,7 @@ namespace Lab1
         {
             try
             {   // Simple count ofthe words which are distinct.
-                int distinctCount = words.Distinct().Count();
+                int distinctCount = words?.Distinct().Count() ?? 0;
                 Console.WriteLine($"Distinct words count: {distinctCount}");
             }
             catch (Exception ex)
@@ -196,11 +198,13 @@ namespace Lab1
             }
         }
         // This Method displays the whole list of words from the file in reverse order.
-        static void ReversePrintWords()
+        static void ReversePrintWords(List<string> words)
         {
             try
-            {   // Taking the order of the list and then Reversing the order and print it out.
-                List<string> reversedWords = words.Reverse().ToList();
+            {
+                List<string> reversedWords = new List<string>(words);
+                reversedWords.Reverse();
+
                 Console.WriteLine("Words in reverse order:");
                 foreach (string word in reversedWords)
                 {
@@ -217,7 +221,7 @@ namespace Lab1
         {
             try
             {   // quick serah for words ending with d.
-                List<string> wordsEndingWithD = words.Where(w => w.EndsWith("d")).ToList();
+                List<string> wordsEndingWithD = words?.Where(w => w.EndsWith("d")).ToList() ?? new List<string>();
                 Console.WriteLine($"Words ending with 'd' ({wordsEndingWithD.Count}):");
                 foreach (string word in wordsEndingWithD)
                 {
@@ -234,7 +238,7 @@ namespace Lab1
         {
             try
             {   // Quick seach for words starting with  'r' and displaying them.
-                List<string> wordsStartingWithR = words.Where(w => w.StartsWith("r")).ToList();
+                List<string> wordsStartingWithR = words?.Where(w => w.StartsWith("r")).ToList() ?? new List<string>();
                 Console.WriteLine($"Words starting with 'r' ({wordsStartingWithR.Count}):");
                 foreach (string word in wordsStartingWithR)
                 {
@@ -251,7 +255,7 @@ namespace Lab1
         {
             try
             {   // Seachs the file for words the start with the letter 'a' && that are more then 3 letters long.
-                List<string> wordsLongerThan3AndStartsWithA = words.Where(w => w.Length > 3 && w.StartsWith("a")).ToList();
+                List<string> wordsLongerThan3AndStartsWithA = words?.Where(w => w.Length > 3 && w.StartsWith("a")).ToList() ?? new List<string>();
                 Console.WriteLine($"Words longer than 3 characters and starting with 'a' ({wordsLongerThan3AndStartsWithA.Count}):");
                 foreach (string word in wordsLongerThan3AndStartsWithA)
                 {
