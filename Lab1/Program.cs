@@ -26,7 +26,7 @@ namespace Lab1
 {
     class Program
     {
-        
+        // Declaring this new instance
         private static List<string> words = new List<string>();
 
         // the Main method which holds the menu and the switch cases for the menu options , which in turns calls the other methods.
